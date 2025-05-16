@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: new_employee_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    environment:
+      DB_USER: postgres
+      DB_HOST: postgres
+      DB_NAME: new_employee_db
+      DB_PASSWORD: admin123
+      DB_PORT: 5432
+      PORT: 3001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/jobs"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  job_posts:
+    image: nginx:alpine
+    volumes:
+      - ./Job_Posts:/usr/share/nginx/html
+      - ./nginx-posts.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8001:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://3.84.202.40"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  job_form:
+    image: nginx:alpine
+    volumes:
+      - ./Job_form:/usr/share/nginx/html
+      - ./nginx-form.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8002:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+networks:
+  default:
+    name: job-network
+    driver: bridge
+
+volumes:
+  postgres_data:

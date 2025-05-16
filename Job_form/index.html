@@ -7,13 +7,13 @@
     <style>
         /* Base Styles */
         :root {
-            --primary-color: #4a6fa5;
+            --primary-color: #055fe5;
             --secondary-color: #6b8cae;
             --accent-color: #ff7e5f;
             --light-color: #f8f9fa;
             --dark-color: #343a40;
             --success-color: #28a745;
-            /* --error-color: #dc3545; */
+            --error-color: #dc3545;
         }
         
         * {
@@ -28,6 +28,58 @@
             color: var(--dark-color);
             background-color: #ffffff;
             padding: 20px;
+        }
+        
+        /* Banner Section */
+        .banner {
+            background: var(--primary-color);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.2), transparent 70%);
+            animation: pulse 8s infinite;
+            z-index: 1;
+        }
+        
+        .banner-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .banner h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 10px;
+            animation: slideIn 1s ease-out;
+        }
+        
+        .banner p {
+            font-size: 1.2rem;
+            animation: slideIn 1.2s ease-out;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.2); opacity: 0.2; }
+            100% { transform: scale(1); opacity: 0.4; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         
         /* Form Container */
@@ -50,6 +102,7 @@
         /* Form Elements */
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
         
         label {
@@ -71,7 +124,7 @@
         select {
             width: 100%;
             padding: 12px 15px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--secondary-color);
             border-radius: 5px;
             font-size: 16px;
             transition: border 0.3s ease;
@@ -86,8 +139,8 @@
         }
         
         textarea {
-            min-height: 120px;
-            resize: vertical;
+            min-height: 200px;
+            resize: none;
         }
         
         /* Skills Input Styling */
@@ -126,16 +179,40 @@
             font-size: 0.85rem;
             margin-top: 5px;
             display: none;
+            position: absolute;
+            bottom: -20px;
+            left: 0;
         }
         
-        input:invalid,
-        textarea:invalid {
-            border-color: var(--error-color);
+        .error.visible {
+            display: block;
         }
         
-        input:valid,
-        textarea:valid {
-            border-color: #28a745;
+        .invalid {
+            border-color: var(--error-color) !important;
+        }
+        
+        /* Notification Popup */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--success-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: slideInRight 0.5s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            to { opacity: 0; }
         }
         
         /* Responsive Design */
@@ -143,36 +220,52 @@
             .form-container {
                 padding: 20px;
             }
+            .banner h1 {
+                font-size: 1.8rem;
+            }
+            .banner p {
+                font-size: 1rem;
+            }
+            .notification {
+                width: 90%;
+                right: 5%;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="banner">
+        <div class="banner-content">
+            <h1>Post Your Dream Job</h1>
+            <p>Connect with top talent by creating a compelling job listing</p>
+        </div>
+    </div>
+    
     <div class="form-container">
-      
         <form id="jobForm">
             <div class="form-group">
                 <label for="jobTitle" class="required-field">Job Title</label>
-                <input type="text" id="jobTitle" name="jobTitle" required>
-                <div class="error" id="jobTitleError">Please enter a job title</div>
+                <input type="text" id="jobTitle" name="jobTitle" required pattern="^\S.*\S$" minlength="5" maxlength="80">
+                <div class="error" id="jobTitleError">Please enter a valid job title (no leading/trailing spaces)</div>
             </div>
             
             <div class="form-group">
                 <label for="jobDescription" class="required-field">Job Description</label>
-                <textarea id="jobDescription" name="jobDescription" required></textarea>
-                <div class="error" id="jobDescriptionError">Please enter a job description</div>
+                <textarea id="jobDescription" name="jobDescription" required minlength="50" maxlength="500"></textarea>
+                <div class="error" id="jobDescriptionError"></div>
             </div>
             
             <div class="form-group">
                 <label for="skillSet" class="required-field">Required Skills</label>
-                <input type="text" id="skillSet" name="skillSet" placeholder="e.g., JavaScript, Python, Project Management" required>
+                <input type="text" id="skillSet" name="skillSet" placeholder="e.g., JavaScript, Python, Project Management" required pattern="^\S.*\S$" minlength="2" maxlength="200">
                 <div class="skills-hint">Separate multiple skills with commas</div>
-                <div class="error" id="skillSetError">Please enter at least one required skill</div>
+                <div class="error" id="skillSetError">Please enter at least one valid skill (no leading/trailing spaces)</div>
             </div>
             
             <div class="form-group">
-                <label for="experience" class="required-field">Required Experience (years)</label>
-                <input type="number" id="experience" name="experience" min="0" step="0.5" required>
-                <div class="error" id="experienceError">Please enter required years of experience</div>
+                <label for="experience" class="required-field">Required Experience</label>
+                <input type="number" id="experience" name="experience" required pattern="^[0-9]+(\.[0-9])?$" step="0.1">
+                <div class="error" id="experienceError">Enter a number between 1 and 40 (e.g., 5 or 5.5)</div>
             </div>
             
             <div class="form-group">
@@ -190,40 +283,197 @@
             
             <div class="form-group">
                 <label for="location" class="required-field">Location</label>
-                <input type="text" id="location" name="location" required>
-                <div class="error" id="locationError">Please enter a location</div>
+                <input type="text" id="location" name="location" required pattern="^[A-Za-z\s,]{3,100}$">
+                <div class="error" id="locationError">Enter 3-60 letters, commas allowed between words, no leading/trailing spaces or commas, no consecutive spaces or commas</div>
             </div>
             
             <div class="form-group">
                 <label for="salary" class="required-field">Salary Range</label>
-                <input type="text" id="salary" name="salary" placeholder="e.g., ₹5,00,000 - ₹7,00,000 or Competitive" required>
-                <div class="error" id="salaryError">Please enter salary information</div>
+                <input type="text" id="salary" name="salary" required pattern="^\S.*\S$">
+                <div class="error" id="salaryError">Enter salary between ₹10,000 and ₹5,80,00,000</div>
             </div>
             
             <div class="form-group">
                 <label for="deadline" class="required-field">Application Deadline</label>
                 <input type="date" id="deadline" name="deadline" required>
-                <div class="error" id="deadlineError">Please select a deadline date</div>
+                <div class="error" id="deadlineError">Select a date between today and 2 years from now</div>
             </div>
             
             <button type="submit" class="submit-btn">Post Job</button>
         </form>
     </div>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('jobForm');
+            const today = new Date();
+            const minDate = today.toISOString().split('T')[0];
+            const maxDate = new Date(today.setFullYear(today.getFullYear() + 2)).toISOString().split('T')[0];
+            const deadlineInput = document.getElementById('deadline');
+            deadlineInput.setAttribute('min', minDate);
+            deadlineInput.setAttribute('max', maxDate);
+            
+            // Validation functions
+            function validateExperience(value) {
+                if (!/^[0-9]+(\.[0-9])?$/.test(value)) return false;
+                const num = parseFloat(value);
+                return !isNaN(num) && num >= 1 && num <= 40;
+            }
+            
+            function validateLocation(value) {
+                return /^[A-Za-z\s,]{3,60}$/.test(value) && 
+                       !/^\s|\s$|\s\s|^,|,$|,,/.test(value) && 
+                       /^[A-Za-z\s,]+$/.test(value);
+            }
+            
+            function validateSalary(value) {
+                const cleanValue = value.replace(/[^0-9-]/g, '');
+                const range = cleanValue.split('-').map(num => parseInt(num.trim()));
+                if (range.length === 1) {
+                    const num = range[0];
+                    return num >= 10000 && num <= 58000000;
+                } else if (range.length === 2) {
+                    const [min, max] = range;
+                    return min >= 10000 && max <= 58000000 && min <= max;
+                }
+                return false;
+            }
+            
+            function validateJobDescription(value) {
+                const length = value.trim().length;
+                return length >= 50 && length <= 500;
+            }
+            
+            function validateDeadline(value) {
+                return value >= minDate && value <= maxDate;
+            }
+            
+            // Real-time validation
+            form.addEventListener('input', function(e) {
+                const target = e.target;
+                const errorElement = document.getElementById(target.name + 'Error');
+                
+                if (!errorElement) return;
+                
+                let errorMessage = '';
+                let isValid = true;
+                
+                switch (target.name) {
+                    case 'jobTitle':
+                        isValid = /^\S.*\S$/.test(target.value) && target.value.length > 0;
+                        errorMessage = 'Please enter a valid job title (no leading/trailing spaces)';
+                        break;
+                    case 'jobDescription':
+                        isValid = validateJobDescription(target.value);
+                        errorMessage = `Description must be 50-500 characters (current: ${target.value.trim().length})`;
+                        break;
+                    case 'skillSet':
+                        isValid = /^\S.*\S$/.test(target.value) && target.value.length > 0;
+                        errorMessage = 'Please enter at least one valid skill (no leading/trailing spaces)';
+                        break;
+                    case 'experience':
+                        isValid = validateExperience(target.value);
+                        errorMessage = 'Enter a number between 1 and 40 (e.g., 5 or 5.5)';
+                        break;
+                    case 'jobType':
+                        isValid = target.value !== '';
+                        errorMessage = 'Please select a job type';
+                        break;
+                    case 'location':
+                        isValid = validateLocation(target.value);
+                        errorMessage = 'Enter 3-60 letters, commas allowed between words, no leading/trailing spaces or commas, no consecutive spaces or commas';
+                        break;
+                    case 'salary':
+                        isValid = validateSalary(target.value);
+                        errorMessage = 'Enter salary between ₹10,000 and ₹5,80,00,000';
+                        break;
+                    case 'deadline':
+                        isValid = validateDeadline(target.value);
+                        errorMessage = 'Select a date between today and 2 years from now';
+                        break;
+                }
+                
+                errorElement.textContent = errorMessage;
+                errorElement.classList.toggle('visible', !isValid);
+                target.classList.toggle('invalid', !isValid);
+            });
             
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
                 // Reset error messages
                 const errorElements = document.querySelectorAll('.error');
-                errorElements.forEach(el => el.style.display = 'none');
+                errorElements.forEach(el => {
+                    el.classList.remove('visible');
+                    el.textContent = '';
+                });
                 
-                // Validate each field
+                // Validate all fields
                 let isValid = true;
+                const fields = ['jobTitle', 'jobDescription', 'skillSet', 'experience', 'jobType', 'location', 'salary', 'deadline'];
                 
-                // [Previous validation logic remains the same...]
+                fields.forEach(field => {
+                    const input = form[field];
+                    const errorElement = document.getElementById(field + 'Error');
+                    let errorMessage = '';
+                    
+                    switch (field) {
+                        case 'jobTitle':
+                            if (!/^\S.*\S$/.test(input.value)) {
+                                isValid = false;
+                                errorMessage = 'Please enter a valid job title (no leading/trailing spaces)';
+                            }
+                            break;
+                        case 'jobDescription':
+                            if (!validateJobDescription(input.value)) {
+                                isValid = false;
+                                errorMessage = `Description must be 50-500 characters (current: ${input.value.trim().length})`;
+                            }
+                            break;
+                        case 'skillSet':
+                            if (!/^\S.*\S$/.test(input.value)) {
+                                isValid = false;
+                                errorMessage = 'Please enter at least one valid skill (no leading/trailing spaces)';
+                            }
+                            break;
+                        case 'experience':
+                            if (!validateExperience(input.value)) {
+                                isValid = false;
+                                errorMessage = 'Enter a number between 1 and 40 (e.g., 5 or 5.5)';
+                            }
+                            break;
+                        case 'jobType':
+                            if (input.value === '') {
+                                isValid = false;
+                                errorMessage = 'Please select a job type';
+                            }
+                            break;
+                        case 'location':
+                            if (!validateLocation(input.value)) {
+                                isValid = false;
+                                errorMessage = 'Enter 3-60 letters, commas allowed between words, no leading/trailing spaces or commas, no consecutive spaces or commas';
+                            }
+                            break;
+                        case 'salary':
+                            if (!validateSalary(input.value)) {
+                                isValid = false;
+                                errorMessage = 'Enter salary between ₹10,000 and ₹5,80,00,000';
+                            }
+                            break;
+                        case 'deadline':
+                            if (!validateDeadline(input.value)) {
+                                isValid = false;
+                                errorMessage = 'Select a date between today and 2 years from now';
+                            }
+                            break;
+                    }
+                    
+                    if (errorMessage) {
+                        errorElement.textContent = errorMessage;
+                        errorElement.classList.add('visible');
+                        input.classList.add('invalid');
+                    }
+                });
                 
                 // If form is valid, submit to server
                 if (isValid) {
@@ -231,7 +481,7 @@
                         jobTitle: form.jobTitle.value.trim(),
                         jobDescription: form.jobDescription.value.trim(),
                         skillSet: form.skillSet.value.split(',').map(skill => skill.trim()),
-                        experience: parseFloat(form.experience.value),
+                        experience: form.experience.value,
                         jobType: form.jobType.value,
                         location: form.location.value.trim(),
                         salary: form.salary.value.trim(),
@@ -243,7 +493,7 @@
                         submitBtn.disabled = true;
                         submitBtn.textContent = 'Posting...';
                         
-                        const response = await fetch('http://3.84.202.40:3000/api/jobs', {
+                        const response = await fetch('http://3.84.202.40:3001/api/jobs', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -258,27 +508,22 @@
                         
                         const data = await response.json();
                         
-                        // Create a more elegant success message
-                        const successMessage = document.createElement('div');
-                        successMessage.style.backgroundColor = '#28a745';
-                        successMessage.style.color = 'white';
-                        successMessage.style.padding = '15px';
-                        successMessage.style.borderRadius = '5px';
-                        successMessage.style.marginTop = '20px';
-                        successMessage.style.textAlign = 'center';
-                        successMessage.innerHTML = `
-                            <h3>Job Posted Successfully!</h3>
-                            <p>Job ID: ${data.id}</p>
-                            <p>You can view it <a href="/jobs/${data.id}" style="color: white; text-decoration: underline;">here</a></p>
-                        `;
+                        // Create popup notification
+                        const notification = document.createElement('div');
+                        notification.className = 'notification';
+                        notification.textContent = `Created ${formData.jobTitle} job post`;
+                        document.body.appendChild(notification);
                         
-                        form.parentNode.insertBefore(successMessage, form.nextSibling);
+                        // Remove notification after animation
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 3000);
+                        
                         form.reset();
                         
                     } catch (error) {
                         console.error('Error:', error);
                         
-                        // Show error message in the form
                         const errorDisplay = document.createElement('div');
                         errorDisplay.style.backgroundColor = '#dc3545';
                         errorDisplay.style.color = 'white';
@@ -292,20 +537,6 @@
                         const submitBtn = document.querySelector('.submit-btn');
                         submitBtn.disabled = false;
                         submitBtn.textContent = 'Post Job';
-                    }
-                }
-            });
-            
-            form.addEventListener('input', function(e) {
-                const target = e.target;
-                const errorId = target.name + 'Error';
-                const errorElement = document.getElementById(errorId);
-                
-                if (errorElement) {
-                    if (target.checkValidity()) {
-                        errorElement.style.display = 'none';
-                    } else {
-                        errorElement.style.display = 'block';
                     }
                 }
             });

@@ -4,7 +4,7 @@ const { Pool } = require('pg');
 const path = require('path');
 const cors = require('cors'); // Add CORS support
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // PostgreSQL connection
 const pool = new Pool({
@@ -16,7 +16,18 @@ const pool = new Pool({
 });
 
 // Middleware
-app.use(cors()); // Enable CORS for all routes
+app.use(cors({
+  origin: [
+    process.env.FRONTEND_URL,
+    "http://3.84.202.40:8001",
+    "http://127.0.0.1:5500",
+    "http://3.84.202.40:8002",
+   
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
