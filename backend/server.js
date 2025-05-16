@@ -4,7 +4,7 @@ const { Pool } = require('pg');
 const path = require('path');
 const cors = require('cors'); // Add CORS support
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3009;
 
 // PostgreSQL connection
 const pool = new Pool({
@@ -19,9 +19,9 @@ const pool = new Pool({
 app.use(cors({
   origin: [
     process.env.FRONTEND_URL,
-    "http://3.84.202.40:8001",
+    "http://54.166.206.245:8024",
     "http://127.0.0.1:5500",
-    "http://3.84.202.40:8002",
+    "http://54.166.206.245:8025",
    
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
