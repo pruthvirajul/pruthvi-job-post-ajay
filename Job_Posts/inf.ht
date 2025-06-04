@@ -24,6 +24,7 @@
         }
 
         body {
+            
             color: var(--dark);
             line-height: 1.6;
         }
@@ -245,6 +246,7 @@
             position: fixed;
             top: 0;
             left: 0;
+            overflow: auto;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
@@ -288,6 +290,7 @@
             background: var(--primary);
             color: white;
             padding: 0.3rem 1rem;
+            overflow: auto;
             border-radius: 20px;
             font-size: 0.9rem;
             font-weight: 600;
@@ -311,6 +314,7 @@
 
         .modal-job-description {
             line-height: 1.7;
+            overflow: auto;
             color: var(--dark);
         }
 
@@ -386,7 +390,7 @@
     <!-- Modal for job details -->
     <div id="jobModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">×</span>
+            <span class="close-modal">&times;</span>
             <div class="modal-header">
                 <h2 class="modal-title" id="modalJobTitle"></h2>
                 <span class="modal-job-type" id="modalJobType"></span>
@@ -406,6 +410,7 @@
                     <div class="job-skills" id="modalJobSkills"></div>
                 </div>
                 <div class="modal-section">
+                  
                     <div class="job-dates">
                         <span><i class="far fa-calendar-alt"></i> Posted: <span id="modalJobPosted"></span></span>
                         <span><i class="far fa-clock"></i> Deadline: <span id="modalJobDeadline"></span></span>
@@ -549,7 +554,7 @@
                 document.getElementById('modalJobSkills').innerHTML = skillsHTML;
                 document.getElementById('modalJobPosted').textContent = postedDate;
                 document.getElementById('modalJobDeadline').textContent = deadlineDate;
-                document.getElementById('modalApplyBtn').href = 'http://98.80.67.100:9013/';
+                document.getElementById('modalApplyBtn').href = `/jobs/${job.id}`;
 
                 modal.style.display = 'block';
             }
