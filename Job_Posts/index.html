@@ -123,16 +123,24 @@
             gap: 1rem;
         }
 
-        .job-icon img {
+        .job-icon {
             width: 50px;
             height: 50px;
-            object-fit: contain;
+            background-color: #eef2ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
         .job-title {
             font-size: 1.3rem;
             font-weight: 600;
             color: var(--dark);
+            word-break: break-word;
         }
 
         .job-type {
@@ -143,6 +151,7 @@
             font-size: 0.8rem;
             font-weight: 600;
             margin-left: auto;
+            white-space: nowrap;
         }
 
         .job-content {
@@ -180,6 +189,8 @@
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 500;
+            word-break: break-word;
+            white-space: normal;
         }
 
         .job-description {
@@ -190,6 +201,9 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             flex-grow: 1;
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .job-dates {
@@ -218,6 +232,7 @@
             font-weight: 600;
             transition: all 0.2s;
             border: 1px solid var(--primary);
+            cursor: pointer;
         }
 
         .view-details-btn:hover {
@@ -281,6 +296,7 @@
         .modal-title {
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
+            word-break: break-word;
         }
 
         .modal-job-type {
@@ -312,6 +328,9 @@
         .modal-job-description {
             line-height: 1.7;
             color: var(--dark);
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .modal-footer {
@@ -413,7 +432,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="http://98.80.67.100:9013/" class="modal-apply-btn" id="modalApplyBtn">Apply Now</a>
+                <a href="http://3.88.203.125:7771/" class="modal-apply-btn" id="modalApplyBtn">Apply Now</a>
             </div>
         </div>
     </div>
@@ -466,9 +485,7 @@
 
                         jobCard.innerHTML = `
                             <div class="job-card-header">
-                                <div class="job-icon">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/226/226777.png" alt="Job Icon">
-                                </div>
+                                <div class="job-icon">J</div>
                                 <h2 class="job-title">${job.job_title}</h2>
                                 <span class="job-type">${formatJobType(job.job_type)}</span>
                             </div>
@@ -486,7 +503,7 @@
                                 </div>
                                 <div class="job-footer">
                                     <button class="view-details-btn" data-job-id="${job.id}">View Details</button>
-                                    <a href="http://98.80.67.100:9013/" class="apply-btn">Apply Now</a>
+                                    <a href="http://3.88.203.125:7771/" class="apply-btn">Apply Now</a>
                                 </div>
                             </div>
                         `;
@@ -549,7 +566,7 @@
                 document.getElementById('modalJobSkills').innerHTML = skillsHTML;
                 document.getElementById('modalJobPosted').textContent = postedDate;
                 document.getElementById('modalJobDeadline').textContent = deadlineDate;
-                document.getElementById('modalApplyBtn').href = 'http://98.80.67.100:9013/';
+                document.getElementById('modalApplyBtn').href = 'http://3.88.203.125:7771/';
 
                 modal.style.display = 'block';
             }
