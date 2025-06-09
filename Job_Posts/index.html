@@ -449,7 +449,7 @@
                 if (e.target === modal) modal.style.display = 'none';
             });
 
-            fetch('http://54.166.206.245:3009/api/jobs')
+            fetch('http://3.88.203.125:3009/api/jobs')
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');
                     return response.json();
