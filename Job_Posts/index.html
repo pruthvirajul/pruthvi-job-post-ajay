@@ -27,34 +27,88 @@
             color: var(--dark);
             line-height: 1.6;
         }
-
+        
+        
         header {
             position: relative;
             text-align: center;
-            padding: 1rem 1rem;
-            background: linear-gradient(135deg, #2a41eb 0%, #3b82f6 100%);
-            color: white;
+            height: 140px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
 
         header h1 {
+            margin: 0;
             font-size: 2.5rem;
+            color: white;
             font-weight: 700;
             letter-spacing: 1px;
             position: relative;
             z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             animation: fadeInDown 1s ease-out;
         }
 
         header p {
-            font-size: 1.2rem;
             font-weight: 300;
-            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            margin-top: 10px;
             opacity: 0.9;
             animation: fadeInUp 1s ease-out 0.2s both;
         }
 
+        @keyframes moveCircles {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-50%) translateX(-50%); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+
+        .banner-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: moveCircles 15s infinite linear;
+        }
+
+        .circle:nth-child(1) {
+            top: 10%;
+            left: 20%;
+            animation-duration: 15s;
+        }
+
+        .circle:nth-child(2) {
+            top: 50%;
+            left: 70%;
+            animation-duration: 20s;
+            animation-direction: reverse;
+        }
+
+        .circle:nth-child(3) {
+            top: 80%;
+            left: 40%;
+            animation-duration: 25s;
+        }
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -65,25 +119,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .header-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            opacity: 0.2;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 10%, transparent 10%);
-            background-size: 30px 30px;
-            animation: pulse 15s infinite linear;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
+       
         .job-container {
             max-width: 1200px;
             margin: 2rem auto;
@@ -117,30 +153,40 @@
 
         .job-card-header {
             padding: 1rem;
-            background: var(--light);
+            background: linear-gradient(rgb(217, 217, 255),rgb(255, 232, 255));
             display: flex;
             align-items: center;
             gap: 1rem;
+            flex-wrap: nowrap;
         }
 
         .job-icon {
-            width: 50px;
-            height: 50px;
-            background-color: #eef2ff;
+            width: 60px;
+            height: 40px;
+            background-color: #ffffff;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary);
-            font-size: 1.5rem;
-            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .job-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
         }
 
         .job-title {
             font-size: 1.3rem;
             font-weight: 600;
             color: var(--dark);
-            word-break: break-word;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+            min-width: 0;
         }
 
         .job-type {
@@ -150,7 +196,7 @@
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
-            margin-left: auto;
+            flex-shrink: 0;
             white-space: nowrap;
         }
 
@@ -254,7 +300,6 @@
             background: var(--primary-light);
         }
 
-        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
@@ -297,6 +342,9 @@
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
             word-break: break-word;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
         }
 
         .modal-job-type {
@@ -386,12 +434,22 @@
                 width: 100%;
                 text-align: center;
             }
+            .job-card-header {
+                flex-wrap: nowrap;
+            }
+            .job-title {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-bg"></div>
+     <header>
+        <div class="banner-background">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
         <h1>Discover Your Next Career</h1>
         <p>Browse exciting job opportunities tailored to your skills</p>
     </header>
@@ -402,7 +460,6 @@
         </div>
     </div>
 
-    <!-- Modal for job details -->
     <div id="jobModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">×</span>
@@ -443,13 +500,12 @@
             const modal = document.getElementById('jobModal');
             const closeModal = document.querySelector('.close-modal');
             
-            // Close modal when clicking X or outside modal
             closeModal.addEventListener('click', () => modal.style.display = 'none');
             window.addEventListener('click', (e) => {
                 if (e.target === modal) modal.style.display = 'none';
             });
 
-            fetch('http://3.88.203.125:3009/api/jobs')
+            fetch('http://3.85.61.23:3405/api/jobs')
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');
                     return response.json();
@@ -485,8 +541,8 @@
 
                         jobCard.innerHTML = `
                             <div class="job-card-header">
-                                <div class="job-icon">J</div>
-                                <h2 class="job-title">${job.job_title}</h2>
+                                <div class="job-icon"><img src="logo.png" alt="Job Logo"></div>
+                                <h2 class="job-title" title="${job.job_title}">${job.job_title}</h2>
                                 <span class="job-type">${formatJobType(job.job_type)}</span>
                             </div>
                             <div class="job-content">
@@ -510,7 +566,6 @@
                         jobListings.appendChild(jobCard);
                     });
 
-                    // Add event listeners to all view details buttons
                     document.querySelectorAll('.view-details-btn').forEach(btn => {
                         btn.addEventListener('click', function() {
                             const jobId = this.getAttribute('data-job-id');
