@@ -11,7 +11,7 @@ const pool = new Pool({
   user: process.env.DB_USER || 'postgres',
   host: process.env.DB_HOST || 'postgres',
   database: process.env.DB_NAME || 'new_employee_db',
-  password: process.env.DB_PASSWORD || 'admin123',
+  password: process.env.DB_PASSWORD || 'admin321',
   port: process.env.DB_PORT || 5432,
 });
 
@@ -19,9 +19,9 @@ const pool = new Pool({
 app.use(cors({
   origin: [
     process.env.FRONTEND_URL,
-    "http://44.223.23.14:8020",
-    "http://127.0.0.1:5500",
-    "http://44.223.23.14:8021",
+    "http://13.61.7.145:8020",
+    "http://13.61.7.145:5500",
+    "http://13.61.7.145:8021",
    
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -148,5 +148,5 @@ app.get('/', (req, res) => {
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server running on http://44.223.23.14:${port}`);
+  console.log(`Server running on http://13.61.7.145:${port}`);
 });
